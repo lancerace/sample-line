@@ -8,7 +8,11 @@ console.log(lineConfig.line);
 router.post("/webhook", line.middleware(lineConfig.line), async (req: Request, res: Response) => {
     console.log("webhook");
     //console.log(response);
+    Promise
+    .all(req.body.events.map(event=>{console.log("event",event)})
+    .then(res=> res.json({ message: "webhook",event:req.body.events }));
 
-    return res.json({ message: "webhook",event:req.body.events })
+
+
 });
 export default router;
