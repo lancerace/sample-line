@@ -5,7 +5,9 @@ const router: express.Router = express.Router();
 
 const lineConfig = config[process.env.ENVIRONMENT];
 console.log(lineConfig.line);
-router.post("/webhook", line.middleware(lineConfig.line), async (req, res) => {
+router.post("/webhook", line.middleware({ channelSecret: 'c1bd7cd4aadce138f53f40a5cce94267',
+channelAccessToken:
+ 'DqMHryHl8/AFJwbpGT8U7u5S14UtrfrctyXXTTkb6OdNFnwX1/1jKIsBaCj0Ybor6HkT+zUEat3XmPmbpzkwwPwWFdRGU+NiMMMO3DvUE7Zs2V+36eooKJiSaJUOG05Zl5c2myAmJL8PG29fo0i2dQdB04t89/1O/w1cDnyilFU=' }), async (req, res) => {
     console.log("webhook");
     console.log("body.event:", req.body.events);
 console.log(req.header);
@@ -26,7 +28,7 @@ console.log(req.headers["x-line-signature"]);
             type: 'text',
             text: event.message.text
         });
-    })).then(result => res.json({ message: "webhook", result: result })).catch((err) => {
+    })).then(result => res.json({ message: "webhook"})).catch((err) => {
             console.error(err);
             res.status(500).end();
         });
