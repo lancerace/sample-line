@@ -9,7 +9,13 @@ router.post("/webhook", line.middleware(lineConfig.line), async (req: Request, r
     console.log("webhook");
     console.log("body.event:",req.body.events);
     Promise
-    .all(req.body.events.map(event=>{console.log("event",event)}))
+    .all(req.body.events.map(event=>{
+        console.log('type:',event.type);
+        console.log('messasge type',event.message.type);
+        if (event.type !== 'message' || event.message.type !== 'text') {
+            return Promise.resolve(null);
+          }
+    }))
     .then(result=> res.json({ message: "webhook",result:result }));
 
 
