@@ -62,7 +62,11 @@ export const initMessageDialog = (event)=>{
             },{
                 type:'sticker',
                 packageId: "11537",
-                stickerId: "52002734"
+                stickerId: "52002734",
+                sender: {
+                    name: "Call levels bot",
+                    iconUrl: "https://img.icons8.com/all/500/bot.png"
+                }
             }])
         }
 }
