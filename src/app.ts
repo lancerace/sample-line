@@ -17,7 +17,8 @@ app.listen(process.env.PORT || 3000, async () => {
 });
 
 
-app.use("/api/v1/", mainController);
+app.use("/api/v1", mainController);
+
 
 //error handler
 app.use((err, req, res, next) => {

@@ -2,16 +2,18 @@ import express from "express";
 import * as line from '@line/bot-sdk';
 import config from '../config';
 import { initMessageDialog } from '../dialogs/message';
+import notificationController from './notification';
 const router: express.Router = express.Router();
-const lineConfig = config[process.env.ENVIRONMENT];
-const client = new line.Client(lineConfig.line);
+const lineConfig = config[process.env.ENVIRONMENT].line;
+const client = new line.Client(lineConfig);
 
+router.use("/notification", notificationController);
 
-router.post("/webhook", line.middleware(lineConfig.line), async (req, res) => {
+router.post("/webhook", line.middleware(lineConfig), async (req, res) => {
     console.log("webhook");
     console.log("body.event:", req.body);
     console.log(req.headers['x-line-signature']);
-    // const flag = line.validateSignature("", lineConfig.line.channelSecret, req.headers['x-line-signature'] as string);
+    // const flag = line.validateSignature("", lineConfig.channelSecret, req.headers['x-line-signature'] as string);
     Promise.all(req.body.events.map(event => {
         console.log('type:', event.type);
         //console.log('messasge type', event.message.type);

@@ -5,8 +5,10 @@ const client = new line.Client(lineConfig.line);
 
 export const initMessageDialog = (event)=>{
 
+    console.log('event:',event);
+    console.log('source:',event.source);
     //if message is type text
-    switch(event.message.text){
+    switch(event.message.text.toLowerCase()){
         case 'hi': {
             return client.replyMessage(event.replyToken, {
                 type: 'text',
@@ -51,7 +53,7 @@ export const initMessageDialog = (event)=>{
                 }
             }, true);
         }
-        case 'Tempura':{
+        case 'tempura':{
             return client.replyMessage(event.replyToken,[{
                 type:'text',
                 text:"$5, enjoy!\uDBC0\uDC84",
@@ -59,7 +61,9 @@ export const initMessageDialog = (event)=>{
                     name: "Call levels bot",
                     iconUrl: "https://img.icons8.com/all/500/bot.png"
                 },
-            },{
+                
+            },
+            {
                 type:'sticker',
                 packageId: "11537",
                 stickerId: "52002734",
@@ -67,7 +71,59 @@ export const initMessageDialog = (event)=>{
                     name: "Call levels bot",
                     iconUrl: "https://img.icons8.com/all/500/bot.png"
                 }
-            }])
+            }])}
+        case 'confirm': {
+            return client.replyMessage(
+                event.replyToken,
+                {
+                    type: 'template',
+                    altText: 'Confirm alt text',
+                    template: {
+                        type: 'confirm',
+                        text: 'Do it?',
+                        actions: [
+                            { label: 'Yes', type: 'message', text: 'Yes!' },
+                            { label: 'No', type: 'message', text: 'No!' },
+                        ],
+                    },
+                }
+            )
+        }
+        case 'carousel':
+            return client.replyMessage(
+                event.replyToken,
+                {
+                    type: 'template',
+                    altText: 'Carousel alt text',
+                    template: {
+                        type: 'carousel',
+                        columns: [
+                            {
+                                thumbnailImageUrl: "https://png.pngtree.com/element_our/20190529/ourmid/pngtree-blue-round-button-illustration-image_1215549.jpg",
+                                title: 'hoge',
+                                text: 'fuga',
+                                actions: [
+                                    { label: 'Go to line.me', type: 'uri', uri: 'https://line.me' },
+                                    { label: 'Say hello1', type: 'postback', data: 'hello こんにちは' },
+                                ],
+                            },
+                            {
+                                thumbnailImageUrl: "https://png.pngtree.com/element_our/20190529/ourmid/pngtree-blue-round-button-illustration-image_1215549.jpg",
+                                title: 'hoge',
+                                text: 'fuga',
+                                actions: [
+                                    { label: '言 hello2', type: 'postback', data: 'hello こんにちは', text: 'hello こんにちは' },
+                                    { label: 'Say message', type: 'message', text: 'Rice=米' },
+                                ],
+                            },
+                        ],
+                    },
+                }
+            );
+        //push notification example
+        case 'push': {
+            return client.pushMessage(event.source.userId, { type: 'text', text: "push notification test" }, false);
+
         }
 }
 
